@@ -1,0 +1,17 @@
+﻿  Enemy.cpp
+D:\repos\game\RogueRiddle\RogueRiddle\Enemy.cpp(10,33): warning C4244: инициализация: преобразование "float" в "const int", возможна потеря данных
+D:\repos\game\RogueRiddle\RogueRiddle\Enemy.cpp(11,37): warning C4244: инициализация: преобразование "float" в "const int", возможна потеря данных
+D:\repos\game\RogueRiddle\RogueRiddle\Enemy.cpp(12,37): warning C4244: инициализация: преобразование "float" в "const int", возможна потеря данных
+D:\repos\game\RogueRiddle\RogueRiddle\Enemy.cpp(13,33): warning C4244: инициализация: преобразование "float" в "const int", возможна потеря данных
+D:\repos\game\RogueRiddle\RogueRiddle\Enemy.cpp(181,58): warning C4244: аргумент: преобразование "T" в "int", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+D:\repos\game\RogueRiddle\RogueRiddle\Enemy.cpp(181,44): warning C4244: аргумент: преобразование "T" в "int", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+D:\repos\game\RogueRiddle\RogueRiddle\Enemy.cpp(197,27): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  RogueRiddle.vcxproj -> D:\repos\game\RogueRiddle\x64\Debug\RogueRiddle.exe
