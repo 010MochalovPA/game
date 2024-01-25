@@ -30,7 +30,6 @@ Player::Player(Level& level, float x, float y): m_level(&level), m_healthBar()
 void Player::updateView(float time) {
 	float targetViewX = m_position.x + (m_direction == Direction::LEFT ? -60.f : 60.f);
 	float accelerationViewX = (targetViewX - m_viewPoint.x) / 0.15f;
-
 	float targetViewY = m_position.y;
 	float accelerationViewY = (targetViewY - m_viewPoint.y) / 0.1f;
 	int levelWidth = m_level->GetWidth();
@@ -156,9 +155,21 @@ bool Player::onGround()
 
 void Player::update(float time)
 {	
-	if (m_state == State::STAY) m_animationManager.set("stay");
-	if (m_state == State::RUN) m_animationManager.set("run");
-	if (m_state == State::JUMP) m_animationManager.set("jump");
+	if (m_state == State::STAY)
+	{
+		m_animationManager.set("stay");
+	}
+
+	if (m_state == State::RUN)
+	{
+		m_animationManager.set("run");
+	}
+
+	if (m_state == State::JUMP)
+	{
+		m_animationManager.set("jump");
+	}
+
 	if (m_state == State::ATTACK)
 	{
 		m_animationManager.set("attack");
@@ -169,6 +180,7 @@ void Player::update(float time)
 			m_animationManager.set("stay");
 		}
 	}
+
 	m_animationManager.flip(m_direction == Direction::LEFT);
 
 	float oldPositionY = m_position.y;
@@ -199,7 +211,6 @@ void Player::update(float time)
 	}
 
 	updateView(time);
-
 	m_animationManager.tick(time);
 }
 

@@ -104,9 +104,7 @@ void Enemy::update(float time)
     if (m_isPatrolling)
     {
         m_direction = Direction::RIGHT;
-
         m_state = State::RUN;
-
         m_isPatrolling = false;
     }
     
@@ -163,6 +161,7 @@ void Enemy::checkCollision(float velocityX)
         m_state = State::STAY;
     }
 }
+
 void Enemy::setAnimation()
 {
     if (m_state == State::STAY)
@@ -175,6 +174,7 @@ void Enemy::setAnimation()
         m_animationManager.set("run");
     }
 }
+
 void Enemy::draw(sf::RenderWindow& window)
 {
 	m_healthBar.draw(window, m_position.x, m_position.y);

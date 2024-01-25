@@ -10,7 +10,8 @@ HealthBar::HealthBar() {
 }
 
 void HealthBar::setHealth(float health) {
-    if (health < 0) {
+    if (health < 0)
+    {
         health = 0;
     }
 

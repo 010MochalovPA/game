@@ -29,7 +29,6 @@ public:
     void takeDamage(int damage, bool damageFromRight);
     void drawScore(sf::RenderWindow& window, int score) const;
 
-
 private:
     sf::Vector2f m_velocity = { 0, 0 };
     sf::Vector2f m_position;
