@@ -7,10 +7,10 @@ namespace DefaultEnemyConstants
     constexpr float MAX_SPEED = 80.f;
     constexpr float ACCELERATION = 7.f;
     constexpr int HEALTH = 100;
-    constexpr int COOLDOWN_TIME = 1.5f;
-    constexpr int VISION_DISTANCE_X = 150.0f;
-    constexpr int VISION_DISTANCE_Y = 50.0f;
-    constexpr int STOP_DISTANCE = 20.0f;
+    constexpr float COOLDOWN_TIME = 1.5f;
+    constexpr float VISION_DISTANCE_X = 150.0f;
+    constexpr float VISION_DISTANCE_Y = 50.0f;
+    constexpr float STOP_DISTANCE = 20.0f;
 }
 
 Enemy::Enemy(Level& level, float x, float y, float patrolDistance) : m_level(&level), m_healthBar()
@@ -133,7 +133,7 @@ void Enemy::update(float time)
         if (m_attackTimer >= attackInterval)
         {
             meleeAttack();
-            attackTimer = 0.0f;
+            m_attackTimer = 0.0f;
         }
     }
     else
@@ -230,7 +230,7 @@ DamageText Enemy::createDamageText(int damage)
     damageText.duration = 0.5f;
     damageText.initialAlpha = 255;
 
-    return damageText
+    return damageText;
 }
 
 float Enemy::getX()
