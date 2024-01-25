@@ -15,35 +15,35 @@ namespace DefaultEnemyConstants
 
 Enemy::Enemy(Level& level, float x, float y, float patrolDistance) : m_level(&level), m_healthBar()
 {
-    if (!font.loadFromFile("./assets/arial.ttf"))
+    if (!m_font.loadFromFile("./assets/arial.ttf"))
     {
         std::cerr << "Failed to load font!" << std::endl;
     }
 
 	m_position = { x, y };
-	m_texture.loadFromFile("./assets/sprite-sheet-enemy.png");
-	m_animationManager = AnimationManager();
-	m_animationManager.create("run", m_texture, 6, 0, 20, 32, 8, 14.f, 32);
-	m_animationManager.create("stay", m_texture, 6, 32, 20, 32, 6, 10.f, 32);
+    m_texture.loadFromFile("./assets/sprite-sheet-enemy.png");
+    m_animationManager = AnimationManager();
+    m_animationManager.create("run", m_texture, 6, 0, 20, 32, 8, 14.f, 32);
+    m_animationManager.create("stay", m_texture, 6, 32, 20, 32, 6, 10.f, 32);
     m_animationManager.create("attack", m_texture, 6, 64, 32, 32, 1, 1.f, 32);
-	m_state = State::STAY;
-	m_maxSpeed = DefaultEnemyConstants::MAX_SPEED;
-	m_acceleration = DefaultEnemyConstants::ACCELERATION;
-	m_patrolDistance = patrolDistance;
-	m_patrolStartX = x - patrolDistance / 2;
-	m_patrolEndX = x + patrolDistance / 2;
-	m_isPatrolling = true;
+    m_state = State::STAY;
+    m_maxSpeed = DefaultEnemyConstants::MAX_SPEED;
+    m_acceleration = DefaultEnemyConstants::ACCELERATION;
+    m_patrolDistance = patrolDistance;
+    m_patrolStartX = x - patrolDistance / 2;
+    m_patrolEndX = x + patrolDistance / 2;
+    m_isPatrolling = true;
     m_health = DefaultEnemyConstants::HEALTH;
     m_isOnCooldown = false;
     m_cooldownTime = DefaultEnemyConstants::COOLDOWN_TIME;
     m_currentCooldownTime = 0.0f;
     m_isDead = false;
-    attackCooldown = sf::seconds(1.5f);
+    m_attackCooldown = sf::seconds(1.5f);
 }
 
 void Enemy::updateDamageTexts(float time)
 {
-    for (auto& damageText : damageTexts)
+    for (auto& damageText : m_damageTexts)
     {
         damageText.text.setFillColor(sf::Color(255, 255, 255, static_cast<sf::Uint8>(
             damageText.initialAlpha * (damageText.duration / 1.0f))));
@@ -53,9 +53,9 @@ void Enemy::updateDamageTexts(float time)
 
         if (damageText.duration <= 0.0f)
         {
-            damageTexts.erase(std::remove_if(damageTexts.begin(), damageTexts.end(),
+            m_damageTexts.erase(std::remove_if(m_damageTexts.begin(), m_damageTexts.end(),
                 [](const DamageText& dt) { return dt.duration <= 0.0f; }),
-                damageTexts.end());
+                m_damageTexts.end());
         }
     }
 }
@@ -118,7 +118,7 @@ void Enemy::update(float time)
     m_velocity.x += m_acceleration * (m_direction == Direction::LEFT ? -1.f : 1.f);
     m_state = State::RUN;
     
-    attackTimer += time;
+    m_attackTimer += time;
     float attackInterval = 1.2f;
 
     if (std::abs(directionToPlayer.x) < DefaultEnemyConstants::VISION_DISTANCE_X 
@@ -132,7 +132,7 @@ void Enemy::update(float time)
             m_state = State::STAY;
         }
 
-        if (attackTimer >= attackInterval)
+        if (m_attackTimer >= attackInterval)
         {
             meleeAttack();
             attackTimer = 0.0f;
@@ -180,7 +180,7 @@ void Enemy::draw(sf::RenderWindow& window)
 	m_healthBar.draw(window, m_position.x, m_position.y);
 	m_animationManager.draw(window, m_position.x, m_position.y);
 
-    for (const auto& damageText : damageTexts)
+    for (const auto& damageText : m_damageTexts)
     {
         window.draw(damageText.text);
     }
@@ -208,8 +208,21 @@ void Enemy::takeDamage(int damage, bool damageFromRight)
     m_currentCooldownTime = 1.0f;
     m_isOnCooldown = true;
 
+    DamageText damageText = createDamageText(damage);
+
+    m_damageTexts.push_back(damageText);
+
+    if (m_health <= 0)
+    {
+        m_isDead = true;
+        m_level->increaseScore(10);
+    }
+}
+
+DamageText Enemy::createDamageText(int damage)
+{
     DamageText damageText;
-    damageText.text.setFont(font);
+    damageText.text.setFont(m_font);
     damageText.text.setCharacterSize(12);
     damageText.text.setFillColor(sf::Color(255, 255, 255, 255));
     damageText.text.setString(std::to_string(damage));
@@ -217,13 +230,7 @@ void Enemy::takeDamage(int damage, bool damageFromRight)
     damageText.duration = 0.5f;
     damageText.initialAlpha = 255;
 
-    damageTexts.push_back(damageText);
-
-    if (m_health <= 0)
-    {
-        m_isDead = true;
-        m_level->increaseScore(10);
-    }
+    return damageText
 }
 
 float Enemy::getX()

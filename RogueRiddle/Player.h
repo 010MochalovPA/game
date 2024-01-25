@@ -36,9 +36,7 @@ private:
     float m_width = 20;
     float m_height = 32;
     AnimationManager m_animationManager;
-
     State m_state;
-
     Direction m_direction = Direction::RIGHT;
     bool m_onGround;
     sf::Vector2f m_viewPoint;

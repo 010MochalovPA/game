@@ -29,6 +29,7 @@ public:
 	bool collisionX(float velocityX);
 	bool isDead();
 	void updateDamageTexts(float time);
+	DamageText createDamageText(int damage);
 
 private:
 	sf::Vector2f m_velocity = { 0, 0 };
@@ -48,13 +49,13 @@ private:
 	float m_patrolEndX;
 	bool m_isPatrolling;
 	int m_health;
-	float attackTimer = 0.0f;
+	float m_attackTimer = 0.0f;
 	bool m_isOnCooldown;
 	float m_cooldownTime;
 	float m_currentCooldownTime;
-	std::vector<DamageText> damageTexts;
-	sf::Font font;
+	std::vector<DamageText> m_damageTexts;
+	sf::Font m_font;
 	bool m_isDead;
-	sf::Clock attackClock;
-	sf::Time attackCooldown;
+	sf::Clock m_attackClock;
+	sf::Time m_attackCooldown;
 };
